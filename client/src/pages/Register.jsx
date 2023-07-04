@@ -151,7 +151,7 @@ const Register = () => {
                 className="flex gap-5 tracking-wider cursor-default z-[10000] items-center justify-center"
               >
                 <div
-                  className={`h-10 w-10 rounded-full flex justify-center items-center ${
+                  className={`h-10 w-10 rounded-full transition-all duration-300 flex justify-center items-center ${
                     activeStep === link.id
                       ? `bg-sky-200 text-black`
                       : `text-white border-white border-2`
@@ -236,7 +236,7 @@ const Register = () => {
                 </div>
                 <div className="w-full flex justify-end">
                   <button
-                    className="text-white bg-sky-900 font-bold px-5 py-2 rounded-lg"
+                    className="text-white bg-sky-900 active:scale-95 hover:bg-sky-800 font-bold px-5 py-2 rounded-lg"
                     type="submit"
                   >
                     Next Step
@@ -261,12 +261,12 @@ const Register = () => {
                   <div className="grid grid-cols-3 gap-3 h-[10rem] w-full">
                     {paymentMonthly.map((plan) => (
                       <div
-                        className={`h-full justify-between border-2 ${
+                        className={`h-full justify-between transition-all duration-300 border-2 ${
                           payment === plan.id
                             ? `border-purple-500`
                             : `border-gray-300`
                         } hover:border-purple-500 ${
-                          payment === plan.id && `bg-gray-100`
+                          payment === plan.id && `bg-gray-200`
                         } rounded-xl cursor-pointer flex-col w-full flex p-3`}
                         key={plan.id}
                         onClick={() => setPayment(plan.id)}
@@ -291,12 +291,12 @@ const Register = () => {
                   <div className="grid grid-cols-3 gap-3 h-[10rem] w-full">
                     {paymentAnnual.map((plan) => (
                       <div
-                        className={`h-full justify-between border-2 ${
+                        className={`h-full justify-between transition-all duration-300 border-2 ${
                           payment === plan.id
                             ? `border-purple-500`
                             : `border-gray-300`
                         } hover:border-purple-500 ${
-                          payment === plan.id && `bg-gray-100`
+                          payment === plan.id && `bg-gray-200`
                         } rounded-xl cursor-pointer flex-col w-full flex p-3`}
                         key={plan.id}
                         onClick={() => setPayment(plan.id)}
@@ -324,7 +324,7 @@ const Register = () => {
                 <div className=" w-full h-16 flex justify-center items-center gap-3 bg-gray-200 rounded-xl">
                   <div className="text-sm">Monthly</div>
                   <div
-                    className={`w-10 h-5 p-1 rounded-full bg-sky-950 flex ${
+                    className={`w-10 h-5 p-1 rounded-full cursor-pointer bg-sky-950 flex ${
                       plan === "monthly" ? `justify-start` : `justify-end`
                     } items-center`}
                     onClick={() => {
@@ -377,7 +377,7 @@ const Register = () => {
               >
                 <div className="h-full w-full flex flex-col gap-2">
                   <div
-                    className={`w-full px-3 h-20 flex items-center cursor-pointer gap-5 justify-center rounded-xl border-2 ${
+                    className={`w-full px-3 h-20 flex transition-all duration-300 items-center cursor-pointer gap-5 justify-center rounded-xl border-2 ${
                       !onlineService
                         ? `border-gray-200`
                         : `border-purple-500 bg-gray-100`
@@ -390,7 +390,7 @@ const Register = () => {
                           onlineService
                             ? `bg-purple-500`
                             : `border-2 border-gray-300`
-                        } h-5 w-5 rounded p-1`}
+                        } h-5 w-5 transition-all duration-300 rounded p-1`}
                       >
                         {onlineService && (
                           <svg
@@ -423,7 +423,7 @@ const Register = () => {
                     </div>
                   </div>
                   <div
-                    className={`w-full px-3 h-20 flex items-center cursor-pointer gap-5 justify-center rounded-xl border-2 ${
+                    className={`w-full px-3 h-20 flex transition-all duration-300 items-center cursor-pointer gap-5 justify-center rounded-xl border-2 ${
                       !largeStorage
                         ? `border-gray-200`
                         : `border-purple-500 bg-gray-100`
@@ -436,7 +436,7 @@ const Register = () => {
                           largeStorage
                             ? `bg-purple-500`
                             : `border-2 border-gray-300`
-                        } h-5 w-5 rounded p-1`}
+                        } h-5 w-5 rounded transition-all duration-300 p-1`}
                       >
                         {largeStorage && (
                           <svg
@@ -469,7 +469,7 @@ const Register = () => {
                     </div>
                   </div>
                   <div
-                    className={`w-full px-3 h-20 flex items-center cursor-pointer gap-5 justify-center rounded-xl border-2 ${
+                    className={`w-full px-3 h-20 flex transition-all duration-300 items-center cursor-pointer gap-5 justify-center rounded-xl border-2 ${
                       !customizableProfile
                         ? `border-gray-200`
                         : `border-purple-500 bg-gray-100`
@@ -482,7 +482,7 @@ const Register = () => {
                           customizableProfile
                             ? `bg-purple-500`
                             : `border-2 border-gray-300`
-                        } h-5 w-5 rounded p-1`}
+                        } h-5 w-5 rounded transition-all duration-300 p-1`}
                       >
                         {customizableProfile && (
                           <svg
@@ -525,7 +525,7 @@ const Register = () => {
                     Go Back
                   </button>
                   <button
-                    className="text-white bg-sky-900 font-bold px-5 py-2 rounded-lg"
+                    className="text-white bg-sky-900 active:scale-95 hover:bg-sky-800 font-bold px-5 py-2 rounded-lg"
                     type="submit"
                   >
                     Next Step
@@ -625,7 +625,7 @@ const Register = () => {
                   Go Back
                 </button>
                 <button
-                  className="text-white bg-sky-900 font-bold px-5 py-2 rounded-lg"
+                  className="text-white bg-sky-900 active:scale-95 hover:bg-sky-800 font-bold px-5 py-2 rounded-lg"
                   onClick={() => {
                     setShowFinalModal(true);
                   }}
