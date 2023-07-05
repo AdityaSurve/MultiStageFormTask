@@ -4,7 +4,10 @@ import FormBackgroundMobile from "../assets/bg-sidebar-mobile.svg";
 import { links, paymentMonthly, paymentAnnual } from "../link";
 import Dashboard from "./Dashboard";
 import { toast } from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 const Register = () => {
+  const navigate = useNavigate();
+
   const [activeStep, setActiveStep] = useState(1);
 
   const [name, setName] = useState("");
@@ -733,7 +736,7 @@ const Register = () => {
                 setCustomizableProfile(false);
                 setTotal("9");
                 setShowFinalModal(false);
-                window.location.reload();
+                navigate("/");
               }}
             >
               Save and exit
