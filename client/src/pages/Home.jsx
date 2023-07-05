@@ -1,4 +1,7 @@
+import { useNavigate } from "react-router-dom";
+
 const Home = () => {
+  const navigate = useNavigate();
   return (
     <div className="h-screen font-pops w-screen flex justify-center items-center">
       <div className="h-[60%] w-[40%] gap-5 rounded-2xl flex flex-col justify-center items-center shadow-lg bg-white bg-opacity-30 shadow-[#00000040]">
@@ -9,7 +12,7 @@ const Home = () => {
           MULTI STAGE FORM
         </div>
         <button
-          onClick={() => (window.location.href = "/register")}
+          onClick={() => navigate("/register")}
           className="text-white bg-purple-800 hover:bg-purple-700 active:scale-95 px-5 py-3 mt-10 rounded-3xl"
         >
           Get Started
