@@ -3,6 +3,7 @@ import FormBackground from "../assets/bg-sidebar-desktop.svg";
 import FormBackgroundMobile from "../assets/bg-sidebar-mobile.svg";
 import { links, paymentMonthly, paymentAnnual } from "../link";
 import Dashboard from "./Dashboard";
+import { toast } from "react-hot-toast";
 const Register = () => {
   const [activeStep, setActiveStep] = useState(1);
 
@@ -298,15 +299,19 @@ const Register = () => {
                     onClick={() => {
                       if (name !== "" && email !== "" && phone !== "") {
                         setActiveStep(2);
+                        toast.success("Step 1 completed");
                       }
                       if (!name) {
                         setNameError(true);
+                        toast.error("Name is required");
                       }
                       if (!email) {
                         setEmailError(true);
+                        toast.error("Email is required");
                       }
                       if (!phone) {
                         setPhoneError(true);
+                        toast.error("Phone number is required");
                       }
                     }}
                   >
@@ -326,7 +331,7 @@ const Register = () => {
               </div>
               <div className="flex flex-col gap-5 mt-5">
                 {plan === "monthly" ? (
-                  <div className="ms-[-36px] grid grid-cols-3 gap-3 h-[10rem] w-[18rem] md:w-full">
+                  <div className="ms-[-36px] md:ms-0 grid grid-cols-3 gap-3 h-[10rem] w-[18rem] md:w-full">
                     {paymentMonthly.map((plan) => (
                       <div
                         className={`h-full justify-between transition-all duration-300 border-2 ${
@@ -335,7 +340,7 @@ const Register = () => {
                             : `border-LightGray`
                         } hover:border-MarineBlue ${
                           payment === plan.id && `bg-Magnolia`
-                        } rounded-xl cursor-pointer flex-col w-[6rem] flex p-3`}
+                        } rounded-xl cursor-pointer flex-col w-[6rem] md:w-full flex p-3`}
                         key={plan.id}
                         onClick={() => setPayment(plan.id)}
                       >
@@ -356,7 +361,7 @@ const Register = () => {
                     ))}
                   </div>
                 ) : (
-                  <div className="ms-[-36px] grid grid-cols-3 gap-3 h-[10rem] w-[18rem] md:w-full">
+                  <div className="ms-[-36px] md:ms-0 grid grid-cols-3 gap-3 h-[10rem] w-[18rem] md:w-full">
                     {paymentAnnual.map((plan) => (
                       <div
                         className={`h-full justify-between transition-all duration-300 border-2 ${
@@ -365,7 +370,7 @@ const Register = () => {
                             : `border-LightGray`
                         } hover:border-MarineBlue ${
                           payment === plan.id && `bg-Magnolia`
-                        } rounded-xl cursor-pointer flex-col w-[6rem] flex p-3`}
+                        } rounded-xl cursor-pointer flex-col w-[6rem] md:w-full flex p-3`}
                         key={plan.id}
                         onClick={() => setPayment(plan.id)}
                       >
@@ -423,7 +428,10 @@ const Register = () => {
                   </button>
                   <button
                     className="text-white bg-MarineBlue active:scale-95 hover:bg-PurplishBlue font-bold px-5 py-2 rounded-lg"
-                    onClick={() => setActiveStep(3)}
+                    onClick={() => {
+                      setActiveStep(3);
+                      toast.success("Step 2 completed");
+                    }}
                   >
                     Next Step
                   </button>
@@ -589,6 +597,7 @@ const Register = () => {
                   onClick={() => {
                     setActiveStep(4);
                     calculateTotal();
+                    toast.success("Step 3 Completed!");
                   }}
                 >
                   Next Step
