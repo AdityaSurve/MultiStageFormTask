@@ -1,5 +1,6 @@
 import { useState } from "react";
 import FormBackground from "../assets/bg-sidebar-desktop.svg";
+import FormBackgroundMobile from "../assets/bg-sidebar-mobile.svg";
 import { links, paymentMonthly, paymentAnnual } from "../link";
 import Dashboard from "./Dashboard";
 const Register = () => {
@@ -8,13 +9,20 @@ const Register = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
+  const [nameError, setNameError] = useState(false);
+  const [emailError, setEmailError] = useState(false);
+  const [phoneError, setPhoneError] = useState(false);
+
   const [plan, setPlan] = useState("monthly");
   const [payment, setPayment] = useState("Arcade");
+
   const [onlineService, setOnlineService] = useState(false);
   const [largeStorage, setLargeStorage] = useState(false);
   const [customizableProfile, setCustomizableProfile] = useState(false);
   const [showFinalModal, setShowFinalModal] = useState(false);
+
   const [total, setTotal] = useState("0");
+
   const calculateTotal = () => {
     if (plan === "monthly") {
       if (payment === "Arcade") {
@@ -128,6 +136,7 @@ const Register = () => {
       }
     }
   };
+
   const planToggle = () => {
     if (plan === "monthly") {
       setPlan("annual");
@@ -135,16 +144,42 @@ const Register = () => {
       setPlan("monthly");
     }
   };
+
   return (
-    <div className="h-full w-full bg-gray-200 font-pops flex justify-center items-center">
-      <div className="w-[50%] h-[70%] bg-white p-3 gap-5 rounded-2xl flex justify-center items-center">
+    <div className="h-full w-full bg-Magnolia font-ubuntu flex justify-center items-center">
+      <div className="z-[0] fixed w-full top-0 left-0 md:hidden flex justify-center items-center h-[20%]">
+        <img
+          src={FormBackgroundMobile}
+          alt="form background"
+          className="z-[0] fixed w-full top-0 left-0 md:hidden"
+        />
+        <div className="md:hidden flex gap-2">
+          {links.map((link) => (
+            <div
+              key={link.id}
+              className="flex gap-5 tracking-wider cursor-default z-[10000] items-center justify-center"
+            >
+              <div
+                className={`h-10 w-10 rounded-full transition-all duration-300 flex justify-center items-center ${
+                  activeStep === link.id
+                    ? `bg-LightBlue text-MarineBlue`
+                    : `text-white border-white border-2`
+                } font-bold`}
+              >
+                {link.id}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+      <div className="w-[90%] z-[1000] md:w-[50%] md:mt-0 mt-10 h-[70%] md:h-[70%] bg-white p-3 gap-5 rounded-2xl flex flex-col md:flex-row justify-center items-center">
         <div className="relative w-[35%] h-full rounded-xl overflow-hidden">
           <img
             src={FormBackground}
             alt="form background"
-            className="z-[0] absolute w-full h-full object-cover"
+            className="z-[0] absolute hidden md:block w-full h-full object-cover"
           />
-          <div className="flex flex-col gap-5 py-10 px-5">
+          <div className="hidden md:flex flex-row md:flex-col gap-5 py-10 px-5">
             {links.map((link) => (
               <div
                 key={link.id}
@@ -153,7 +188,7 @@ const Register = () => {
                 <div
                   className={`h-10 w-10 rounded-full transition-all duration-300 flex justify-center items-center ${
                     activeStep === link.id
-                      ? `bg-sky-200 text-black`
+                      ? `bg-LightBlue text-MarineBlue`
                       : `text-white border-white border-2`
                   } font-bold`}
                 >
@@ -169,105 +204,138 @@ const Register = () => {
             ))}
           </div>
         </div>
-        <div className="w-[75%] h-full px-10 py-10 flex flex-col gap-2">
+        <div className="w-[75%] h-full px-2 md:px-10 py-2 md:py-10 flex flex-col gap-2">
           {activeStep === 1 && (
             <div className="flex flex-col">
-              <div className="text-3xl font-bold text-sky-950">
+              <div className="text-3xl font-bold text-MarineBlue">
                 Personal Info
               </div>
-              <div className="font-semibold text-sm mt-3 text-gray-400">
+              <div className="text-sm mt-3 text-CoolGray">
                 Please provide your name, email address, and phone number.
               </div>
-              <form
-                className="flex flex-col gap-5 mt-5"
-                onSubmit={() => {
-                  if (name !== "" && email !== "" && phone !== "") {
-                    setActiveStep(2);
-                  }
-                }}
-              >
-                <div className="flex flex-col gap-2">
+              <div className="flex flex-col gap-5 mt-5">
+                <div className="flex flex-col gap-1">
                   <label
                     htmlFor="name"
-                    className="text-sm text-sky-900 font-semibold"
+                    className="text-sm text-MarineBlue flex justify-between"
                   >
-                    Name
+                    <div>Name</div>
+                    {nameError && (
+                      <div className="text-StrawberryRed text-sm font-semibold">
+                        This field is required
+                      </div>
+                    )}
                   </label>
                   <input
                     type="text"
                     id="name"
                     name="name"
                     placeholder="e.g. Vanessa Mint"
-                    className="rounded-lg border-2 text-sky-900 font-semibold text-sm placeholder:text-sm px-4 py-2 cursor-pointer border-gray-300 hover:border-purple-500  transition duration-300 ease-in-out"
+                    className={`rounded-lg border-2 text-MarineBlue font-semibold text-sm placeholder:text-sm px-4 py-2 cursor-pointer ${
+                      nameError
+                        ? `border-StrawberryRed hover:border-StrawberryRed`
+                        : `border-LightGray hover:border-MarineBlue`
+                    } transition duration-300 ease-in-out`}
                     onChange={(e) => setName(e.target.value)}
+                    onClick={() => setNameError(false)}
                   />
                 </div>
-                <div className="flex flex-col gap-2">
+                <div className="flex flex-col gap-1">
                   <label
                     htmlFor="email"
-                    className="text-sm text-sky-900 font-semibold"
+                    className="text-sm text-MarineBlue flex justify-between"
                   >
-                    Email
+                    <div>Email</div>
+                    {emailError && (
+                      <div className="text-StrawberryRed text-sm font-semibold">
+                        This field is required
+                      </div>
+                    )}
                   </label>
                   <input
                     type="email"
                     id="email"
                     name="email"
                     placeholder="e.g. vanessamint@gmail.com"
-                    className="rounded-lg border-2 px-4 py-2 text-sm text-sky-900 font-semibold placeholder:text-sm cursor-pointer border-gray-300 hover:border-purple-500  transition duration-300 ease-in-out"
+                    className={`rounded-lg border-2 text-MarineBlue font-semibold text-sm placeholder:text-sm px-4 py-2 cursor-pointer ${
+                      emailError
+                        ? `border-StrawberryRed hover:border-StrawberryRed`
+                        : `border-LightGray hover:border-MarineBlue`
+                    } transition duration-300 ease-in-out`}
                     onChange={(e) => setEmail(e.target.value)}
+                    onClick={() => setEmailError(false)}
                   />
                 </div>
-                <div className="flex flex-col gap-2">
+                <div className="flex flex-col gap-1">
                   <label
                     htmlFor="phone"
-                    className="text-sm text-sky-900 font-semibold"
+                    className="text-sm text-MarineBlue flex justify-between items-end"
                   >
-                    Phone Number
+                    <div>Phone Number</div>
+                    {phoneError && (
+                      <div className="text-StrawberryRed text-right md:text-left  w-full md:w-auto text-sm font-semibold">
+                        This field is required
+                      </div>
+                    )}
                   </label>
                   <input
                     type="tel"
                     id="phone"
                     name="phone"
                     placeholder="e.g. +1 234 567 890"
-                    className="rounded-lg border-2 px-4 py-2 text-sm text-sky-900 font-semibold placeholder:text-sm cursor-pointer border-gray-300 hover:border-purple-500  transition duration-300 ease-in-out"
+                    className={`rounded-lg border-2 text-MarineBlue font-semibold text-sm placeholder:text-sm px-4 py-2 cursor-pointer ${
+                      phoneError
+                        ? `border-StrawberryRed hover:border-StrawberryRed`
+                        : `border-LightGray hover:border-MarineBlue`
+                    } transition duration-300 ease-in-out`}
                     onChange={(e) => setPhone(e.target.value)}
+                    onClick={() => setPhoneError(false)}
                   />
                 </div>
-                <div className="w-full flex justify-end">
+                <div className="w-full flex justify-center md:justify-end">
                   <button
-                    className="text-white bg-sky-900 active:scale-95 hover:bg-sky-800 font-bold px-5 py-2 rounded-lg"
-                    type="submit"
+                    className="text-white bg-MarineBlue active:scale-95 hover:bg-PurplishBlue font-bold px-5 py-2 rounded-lg"
+                    onClick={() => {
+                      if (name !== "" && email !== "" && phone !== "") {
+                        setActiveStep(2);
+                      }
+                      if (!name) {
+                        setNameError(true);
+                      }
+                      if (!email) {
+                        setEmailError(true);
+                      }
+                      if (!phone) {
+                        setPhoneError(true);
+                      }
+                    }}
                   >
                     Next Step
                   </button>
                 </div>
-              </form>
+              </div>
             </div>
           )}
           {activeStep === 2 && (
             <div className="flex flex-col h-full">
-              <div className="text-3xl font-bold text-sky-950">
+              <div className="text-3xl font-bold text-MarineBlue">
                 Select your plan
               </div>
-              <div className="font-semibold text-sm mt-3 text-gray-400">
+              <div className="text-sm mt-3 text-CoolGray">
                 You have the option of monthly or yearly billing.
               </div>
-              <form
-                onSubmit={() => setActiveStep(3)}
-                className="flex flex-col gap-5 mt-5"
-              >
+              <div className="flex flex-col gap-5 mt-5">
                 {plan === "monthly" ? (
-                  <div className="grid grid-cols-3 gap-3 h-[10rem] w-full">
+                  <div className="ms-[-36px] grid grid-cols-3 gap-3 h-[10rem] w-[18rem] md:w-full">
                     {paymentMonthly.map((plan) => (
                       <div
                         className={`h-full justify-between transition-all duration-300 border-2 ${
                           payment === plan.id
-                            ? `border-purple-500`
-                            : `border-gray-300`
-                        } hover:border-purple-500 ${
-                          payment === plan.id && `bg-gray-200`
-                        } rounded-xl cursor-pointer flex-col w-full flex p-3`}
+                            ? `border-MarineBlue`
+                            : `border-LightGray`
+                        } hover:border-MarineBlue ${
+                          payment === plan.id && `bg-Magnolia`
+                        } rounded-xl cursor-pointer flex-col w-[6rem] flex p-3`}
                         key={plan.id}
                         onClick={() => setPayment(plan.id)}
                       >
@@ -277,10 +345,10 @@ const Register = () => {
                           className="w-10 h-10"
                         />
                         <div className="flex flex-col gap-2">
-                          <div className="text-sm font-bold text-sky-950">
+                          <div className="text-sm font-bold text-MarineBlue">
                             {plan.id}
                           </div>
-                          <div className="text-sm font-semibold text-gray-500">
+                          <div className="text-sm font-semibold text-CoolGray">
                             {plan.cost}
                           </div>
                         </div>
@@ -288,16 +356,16 @@ const Register = () => {
                     ))}
                   </div>
                 ) : (
-                  <div className="grid grid-cols-3 gap-3 h-[10rem] w-full">
+                  <div className="ms-[-36px] grid grid-cols-3 gap-3 h-[10rem] w-[18rem] md:w-full">
                     {paymentAnnual.map((plan) => (
                       <div
                         className={`h-full justify-between transition-all duration-300 border-2 ${
                           payment === plan.id
-                            ? `border-purple-500`
-                            : `border-gray-300`
-                        } hover:border-purple-500 ${
-                          payment === plan.id && `bg-gray-200`
-                        } rounded-xl cursor-pointer flex-col w-full flex p-3`}
+                            ? `border-MarineBlue`
+                            : `border-LightGray`
+                        } hover:border-MarineBlue ${
+                          payment === plan.id && `bg-Magnolia`
+                        } rounded-xl cursor-pointer flex-col w-[6rem] flex p-3`}
                         key={plan.id}
                         onClick={() => setPayment(plan.id)}
                       >
@@ -307,13 +375,13 @@ const Register = () => {
                           className="w-10 h-10"
                         />
                         <div className="flex flex-col gap-2">
-                          <div className="text-sm font-bold text-sky-950">
+                          <div className="text-sm font-bold text-MarineBlue">
                             {plan.id}
                           </div>
-                          <div className="text-sm font-semibold text-gray-500">
+                          <div className="text-sm font-semibold text-CoolGray">
                             {plan.cost}
                           </div>
-                          <div className="text-xs text-sky-950">
+                          <div className="text-xs text-MarineBlue">
                             2 months free
                           </div>
                         </div>
@@ -321,10 +389,10 @@ const Register = () => {
                     ))}
                   </div>
                 )}
-                <div className=" w-full h-16 flex justify-center items-center gap-3 bg-gray-200 rounded-xl">
+                <div className=" w-full h-16 flex justify-center items-center gap-3 bg-Magnolia rounded-xl">
                   <div className="text-sm">Monthly</div>
                   <div
-                    className={`w-10 h-5 p-1 rounded-full cursor-pointer bg-sky-950 flex ${
+                    className={`w-10 h-5 px-1 py-2 rounded-full cursor-pointer bg-MarineBlue flex ${
                       plan === "monthly" ? `justify-start` : `justify-end`
                     } items-center`}
                     onClick={() => {
@@ -332,7 +400,7 @@ const Register = () => {
                       setPayment("Arcade");
                     }}
                   >
-                    <div className="h-4 w-4 rounded-full bg-white" />
+                    <div className="h-3 w-3 rounded-full bg-Alabaster" />
                   </div>
                   <div className="text-sm">Yearly</div>
                 </div>
@@ -341,55 +409,52 @@ const Register = () => {
                     onClick={() => {
                       setPayment("Arcade");
                       setPlan("monthly");
+                      setNameError(false);
+                      setEmailError(false);
+                      setPhoneError(false);
                       setName("");
                       setEmail("");
                       setPhone("");
                       setActiveStep(1);
                     }}
-                    className="text-gray-400 font-bold"
+                    className="text-CoolGray font-bold"
                   >
                     Go Back
                   </button>
                   <button
-                    className="text-white bg-sky-900 font-bold px-5 py-2 rounded-lg"
-                    type="submit"
+                    className="text-white bg-MarineBlue active:scale-95 hover:bg-PurplishBlue font-bold px-5 py-2 rounded-lg"
+                    onClick={() => setActiveStep(3)}
                   >
                     Next Step
                   </button>
                 </div>
-              </form>
+              </div>
             </div>
           )}
           {activeStep === 3 && (
             <div className="flex flex-col">
-              <div className="text-3xl font-bold text-sky-950">
+              <div className="text-3xl font-bold text-MarineBlue">
                 Pick add-ons
               </div>
-              <div className="font-semibold text-sm mt-3 text-gray-400">
+              <div className="font-semibold text-sm mt-3 text-CoolGray">
                 Add-ons help enhance your gaming experience.
               </div>
-              <form
-                onSubmit={() => {
-                  setActiveStep(4);
-                  calculateTotal();
-                }}
-                className="h-full mt-5 w-full"
-              >
-                <div className="h-full w-full flex flex-col gap-2">
+              <div className="h-full ms-[-30px] md:ms-0 mt-5 w-full">
+                <div className="h-full w-[18rem] md:w-full flex flex-col gap-2">
                   <div
-                    className={`w-full px-3 h-20 flex transition-all duration-300 items-center cursor-pointer gap-5 justify-center rounded-xl border-2 ${
+                    className={`w-full px-1 md:px-3 h-20 flex transition-all duration-300 items-center cursor-pointer gap-5 justify-center rounded-xl border-2 ${
                       !onlineService
-                        ? `border-gray-200`
-                        : `border-purple-500 bg-gray-100`
-                    } hover:border-purple-500`}
+                        ? `border-LightGray`
+                        : `border-MarineBlue bg-Magnolia`
+                    } hover:border-MarineBlue`}
                     onClick={() => setOnlineService(!onlineService)}
                   >
                     <div className="flex justify-center items-center">
                       <div
                         className={`${
                           onlineService
-                            ? `bg-purple-500`
-                            : `border-2 border-gray-300`
+                            ? `bg-PurplishBlue`
+                            : `border-2 border-LightGray`
                         } h-5 w-5 transition-all duration-300 rounded p-1`}
                       >
                         {onlineService && (
@@ -410,32 +475,30 @@ const Register = () => {
                     </div>
                     <div className="w-[80%] h-full flex justify-between items-center">
                       <div className="flex flex-col gap-1">
-                        <div className="font-bold text-sky-900">
+                        <div className="font-bold text-MarineBlue">
                           Online Service
                         </div>
-                        <div className="text-sm font-semibold text-gray-400">
+                        <div className="text-sm text-CoolGray">
                           Access to multiplayer games
                         </div>
                       </div>
-                      <div className="text-sm text-purple-700 font-semibold">
-                        +$1/mo
-                      </div>
+                      <div className="text-sm text-PurplishBlue">+$1/mo</div>
                     </div>
                   </div>
                   <div
-                    className={`w-full px-3 h-20 flex transition-all duration-300 items-center cursor-pointer gap-5 justify-center rounded-xl border-2 ${
+                    className={`w-full px-1 md:px-3 h-20 flex transition-all duration-300 items-center cursor-pointer gap-5 justify-center rounded-xl border-2 ${
                       !largeStorage
-                        ? `border-gray-200`
-                        : `border-purple-500 bg-gray-100`
-                    } hover:border-purple-500`}
+                        ? `border-LightGray`
+                        : `border-MarineBlue bg-Magnolia`
+                    } hover:border-MarineBlue`}
                     onClick={() => setLargeStorage(!largeStorage)}
                   >
                     <div className="flex justify-center items-center">
                       <div
                         className={`${
                           largeStorage
-                            ? `bg-purple-500`
-                            : `border-2 border-gray-300`
+                            ? `bg-PurplishBlue`
+                            : `border-2 border-LightGray`
                         } h-5 w-5 rounded transition-all duration-300 p-1`}
                       >
                         {largeStorage && (
@@ -456,32 +519,30 @@ const Register = () => {
                     </div>
                     <div className="w-[80%] h-full flex justify-between items-center">
                       <div className="flex flex-col gap-1">
-                        <div className="font-bold text-sky-900">
+                        <div className="font-bold text-MarineBlue">
                           Larger Storage
                         </div>
-                        <div className="text-sm font-semibold text-gray-400">
+                        <div className="text-sm text-CoolGray">
                           Extra 1TB of cloud save
                         </div>
                       </div>
-                      <div className="text-sm text-purple-700 font-semibold">
-                        +$2/mo
-                      </div>
+                      <div className="text-sm text-PurplishBlue">+$2/mo</div>
                     </div>
                   </div>
                   <div
-                    className={`w-full px-3 h-20 flex transition-all duration-300 items-center cursor-pointer gap-5 justify-center rounded-xl border-2 ${
+                    className={`w-full px-1 md:px-3 h-20 flex transition-all duration-300 items-center cursor-pointer gap-5 justify-center rounded-xl border-2 ${
                       !customizableProfile
-                        ? `border-gray-200`
-                        : `border-purple-500 bg-gray-100`
-                    } hover:border-purple-500`}
+                        ? `border-LightGray`
+                        : `border-MarineBlue bg-Magnolia`
+                    } hover:border-MarineBlue`}
                     onClick={() => setCustomizableProfile(!customizableProfile)}
                   >
                     <div className="flex justify-center items-center">
                       <div
                         className={`${
                           customizableProfile
-                            ? `bg-purple-500`
-                            : `border-2 border-gray-300`
+                            ? `bg-PurplishBlue`
+                            : `border-2 border-LightGray`
                         } h-5 w-5 rounded transition-all duration-300 p-1`}
                       >
                         {customizableProfile && (
@@ -502,58 +563,59 @@ const Register = () => {
                     </div>
                     <div className="w-[80%] h-full flex justify-between items-center">
                       <div className="flex flex-col gap-1">
-                        <div className="font-bold text-sky-900">
+                        <div className="font-bold text-MarineBlue">
                           Customizable Profile
                         </div>
-                        <div className="text-sm font-semibold text-gray-400">
+                        <div className="text-sm text-CoolGray">
                           Custom theme on your profile
                         </div>
                       </div>
-                      <div className="text-sm text-purple-700 font-semibold">
-                        +$2/mo
-                      </div>
+                      <div className="text-sm text-PurplishBlue">+$2/mo</div>
                     </div>
                   </div>
                 </div>
-                <div className="w-full flex justify-between items-center">
-                  <button
-                    onClick={() => {
-                      setActiveStep(2);
-                    }}
-                    className="text-gray-400 font-bold"
-                  >
-                    Go Back
-                  </button>
-                  <button
-                    className="text-white bg-sky-900 active:scale-95 hover:bg-sky-800 font-bold px-5 py-2 rounded-lg"
-                    type="submit"
-                  >
-                    Next Step
-                  </button>
-                </div>
-              </form>
+              </div>
+              <div className="w-full mt-5 flex justify-between items-center">
+                <button
+                  onClick={() => {
+                    setActiveStep(2);
+                  }}
+                  className="text-CoolGray font-bold"
+                >
+                  Go Back
+                </button>
+                <button
+                  className="text-white bg-MarineBlue active:scale-95 hover:bg-PurplishBlue font-bold px-5 py-2 rounded-lg"
+                  onClick={() => {
+                    setActiveStep(4);
+                    calculateTotal();
+                  }}
+                >
+                  Next Step
+                </button>
+              </div>
             </div>
           )}
           {activeStep === 4 && (
             <div className="relative flex flex-col h-full">
-              <div className="text-3xl font-bold text-sky-950">
+              <div className="text-3xl font-bold text-MarineBlue">
                 Finishing Up
               </div>
-              <div className="font-semibold text-sm mt-3 text-gray-400">
+              <div className="font-semibold text-sm mt-3 text-CoolGray">
                 Double Check everything looks OK before confirming.
               </div>
-              <div className="bg-gray-100 mt-5 flex flex-col rounded-lg overflow-hidden">
+              <div className="bg-Magnolia mt-5 flex flex-col rounded-lg overflow-hidden">
                 <div className="flex justify-between px-5 py-3 items-center w-full">
                   <div className="flex flex-col">
-                    <div className="font-bold text-sky-950">{`${payment} (${plan})`}</div>
+                    <div className="font-bold text-MarineBlue">{`${payment} (${plan})`}</div>
                     <div
-                      className="underline text-sm text-gray-400 mt-2 hover:text-purple-500 cursor-pointer"
+                      className="underline text-sm text-CoolGray mt-2 hover:text-PurplishBlue cursor-pointer"
                       onClick={() => setActiveStep(2)}
                     >
                       Change
                     </div>
                   </div>
-                  <div className="text-sky-950 font-bold">
+                  <div className="text-MarineBlue font-bold">
                     {plan === "monthly" ? (
                       <>
                         {payment === "Arcade" ? (
@@ -574,58 +636,56 @@ const Register = () => {
                   </div>
                 </div>
                 {onlineService && (
-                  <>
-                    <div className="border-[0.5px] border-gray-200 w-full h-0" />
+                  <div className="flex flex-col w-full items-center">
+                    <div className="bg-LightGray w-[90%] h-[0.5px]" />
                     <div className="flex justify-between px-5 py-3 items-center w-full">
-                      <div className="text-gray-400 font-semibold text-sm">
+                      <div className="text-CoolGray text-sm">
                         Online Service
                       </div>
-                      <div className="text-sky-950 text-sm">+$1/mo</div>
+                      <div className="text-MarineBlue text-sm">+$1/mo</div>
                     </div>
-                  </>
+                  </div>
                 )}
                 {largeStorage && (
-                  <>
-                    <div className="border-[0.5px] border-gray-200 w-full h-0" />
+                  <div className="flex flex-col w-full items-center">
+                    <div className="bg-LightGray w-[90%] h-[0.5px]" />
                     <div className="flex justify-between px-5 py-3 items-center w-full">
-                      <div className="text-gray-400 font-semibold text-sm">
-                        Large Storage
-                      </div>
-                      <div className="text-sky-950 text-sm">+$2/mo</div>
+                      <div className="text-CoolGray text-sm">Large Storage</div>
+                      <div className="text-MarineBlue text-sm">+$2/mo</div>
                     </div>
-                  </>
+                  </div>
                 )}
                 {customizableProfile && (
-                  <>
-                    <div className="border-[0.5px] border-gray-200 w-full h-0" />
+                  <div className="flex flex-col w-full items-center">
+                    <div className="bg-LightGray w-[90%] h-[0.5px]" />
                     <div className="flex justify-between px-5 py-3 items-center w-full">
-                      <div className="text-gray-400 font-semibold text-sm">
+                      <div className="text-CoolGray text-sm">
                         Customizable Profile
                       </div>
-                      <div className="text-sky-950 text-sm">+$2/mo</div>
+                      <div className="text-MarineBlue text-sm">+$2/mo</div>
                     </div>
-                  </>
+                  </div>
                 )}
               </div>
               <div className="w-full mt-5 flex justify-between items-center px-5">
-                <div className="text-sm text-gray-400 font-semibold">
+                <div className="text-sm text-CoolGray tracking-wide">
                   Total {`(per ${plan === "monthly" ? "month" : "year"})`}
                 </div>
-                <div className="font-semibold text-lg text-purple-500">{`+$${total}/${
+                <div className="font-semibold text-lg text-PurplishBlue">{`+$${total}/${
                   plan === "monthly" ? "mo" : "yr"
                 }`}</div>
               </div>
-              <div className="absolute bottom-[-1em] w-full mt-7 flex justify-between items-center">
+              <div className="absolute bottom-[-4em] md:bottom-[-1em] w-full mt-7 flex justify-between items-center">
                 <button
                   onClick={() => {
                     setActiveStep(3);
                   }}
-                  className="text-gray-400 font-bold"
+                  className="text-CoolGray font-bold"
                 >
                   Go Back
                 </button>
                 <button
-                  className="text-white bg-sky-900 active:scale-95 hover:bg-sky-800 font-bold px-5 py-2 rounded-lg"
+                  className="text-white bg-MarineBlue active:scale-95 hover:bg-PurplishBlue font-bold px-5 py-2 rounded-lg"
                   onClick={() => {
                     setShowFinalModal(true);
                   }}
@@ -652,7 +712,7 @@ const Register = () => {
           />
           <div className="w-full h-10 flex justify-center items-center">
             <div
-              className="bg-sky-600 rounded-xl cursor-pointer hover:bg-sky-700 active:scale-95 text-white px-5 py-2"
+              className="bg-MarineBlue rounded-xl cursor-pointer hover:bg-PurplishBlue active:scale-95 text-white px-5 py-2"
               onClick={() => {
                 setName("");
                 setEmail("");
